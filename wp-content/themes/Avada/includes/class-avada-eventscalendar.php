@@ -408,7 +408,7 @@ class Avada_EventsCalendar {
 	 * @return string The altered contents.
 	 */
 	public function single_events_blocks_sharing_box( $content ) {
-		if ( has_blocks() ) {
+		if ( Avada_Helper::tribe_is_event() && has_blocks() ) {
 			ob_start();
 			avada_render_social_sharing( 'events' );
 			$sharing_box = ob_get_clean();

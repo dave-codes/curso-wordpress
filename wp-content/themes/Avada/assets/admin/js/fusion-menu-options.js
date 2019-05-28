@@ -237,7 +237,7 @@ jQuery( window ).load( function() {
 					$hiddenValue  = ( $rangeDefault ) ? jQuery( this ).parent().find( '.fusion-hidden-value' ) : false,
 					$defaultValue = ( $rangeDefault ) ? jQuery( this ).parents( '.fusion-builder-option' ).find( '.fusion-range-default' ).data( 'default' ) : false;
 
-				createSlider( $i, $targetId, $rangeInput, $min, $max, $step, $value, $decimals, $rangeDefault, $hiddenValue, $defaultValue, $direction );
+				createSlider( $i, $targetId, $rangeSlider, $rangeInput, $min, $max, $step, $value, $decimals, $rangeDefault, $hiddenValue, $defaultValue, $direction );
 
 				$i++;
 			} );
@@ -278,7 +278,9 @@ jQuery( window ).load( function() {
 	// On outside click.
 	$wrapEl.on( 'click', itemWrapEl + ' .fusion_builder_modal_overlay', function( event ) {
 		var $backup = jQuery( '.fusion-menu-clone' ).find( '.fusion-builder-modal-settings-container' ).hide(),
-			colorPickers = jQuery( this ).next( '.fusion-builder-modal-settings-container' ).find( '.fusion-builder-option .wp-color-picker' );
+			settingsContainer = jQuery( this ).next( '.fusion-builder-modal-settings-container' ),
+			colorPickers = settingsContainer.find( '.fusion-builder-option .wp-color-picker' ),
+			rangeSlider = settingsContainer.find( '.fusion-builder-option.avada-range .fusion-slider-container' );
 
 		event.preventDefault();
 
@@ -286,8 +288,8 @@ jQuery( window ).load( function() {
 			jQuery( this ).closest( '.widget' ).css( 'z-index', '100' );
 		}
 
-		if ( 'undefined' !== typeof $rangeSlider && 0 < $rangeSlider.length ) {
-			$rangeSlider.each( function() {
+		if ( 'undefined' !== typeof rangeSlider && 0 < rangeSlider.length ) {
+			rangeSlider.each( function() {
 				this.noUiSlider.destroy();
 			} );
 		}
@@ -311,7 +313,9 @@ jQuery( window ).load( function() {
 
 	// On save,
 	$wrapEl.on( 'click', '.fusion-builder-modal-save', function( event ) {
-		var colorPickers = jQuery( this ).closest( '.fusion-builder-modal-settings-container' ).find( '.fusion-builder-option .wp-color-picker' );
+		var settingsContainer = jQuery( this ).closest( '.fusion-builder-modal-settings-container' ),
+			colorPickers = jQuery( this ).closest( '.fusion-builder-modal-settings-container' ).find( '.fusion-builder-option .wp-color-picker' ),
+			rangeSlider = settingsContainer.find( '.fusion-builder-option.avada-range .fusion-slider-container' );
 
 		event.preventDefault();
 
@@ -319,8 +323,8 @@ jQuery( window ).load( function() {
 			jQuery( this ).closest( '.widget' ).css( 'z-index', '100' );
 		}
 
-		if ( 'undefined' !== typeof $rangeSlider && 0 < $rangeSlider.length ) {
-			$rangeSlider.each( function() {
+		if ( 'undefined' !== typeof rangeSlider && 0 < rangeSlider.length ) {
+			rangeSlider.each( function() {
 				this.noUiSlider.destroy();
 			} );
 		}
@@ -339,10 +343,10 @@ jQuery( window ).load( function() {
 		jQuery( '.fusion_builder_modal_overlay' ).hide();
 		jQuery( 'body' ).removeClass( 'fusion_builder_no_scroll' );
 		jQuery( '.fusion-menu-clone' ).html( '' );
+
 	} );
 
-
-	function createSlider( $slide, $targetId, $rangeInput, $min, $max, $step, $value, $decimals, $rangeDefault, $hiddenValue, $defaultValue, $direction ) {
+	function createSlider( $slide, $targetId, $rangeSlider, $rangeInput, $min, $max, $step, $value, $decimals, $rangeDefault, $hiddenValue, $defaultValue, $direction ) {
 
 		// Create slider with values passed on in data attributes.
 		var $slider = noUiSlider.create( $rangeSlider[ $slide ], {
@@ -408,6 +412,8 @@ jQuery( window ).load( function() {
 
 		// On manual input change, update slider position
 		$rangeInput.on( 'keyup', function( values, handle ) {
+			var $rangeSlider = jQuery( this ).next( '.fusion-slider-container' );
+
 			if ( $rangeDefault ) {
 				$rangeDefault.parent().removeClass( 'checked' );
 				$hiddenValue.val( values[handle] );
@@ -424,7 +430,6 @@ jQuery( window ).load( function() {
 		} );
 	}
 } );
-
 
 jQuery( document ).ready( function() {
 
@@ -450,5 +455,4 @@ jQuery( document ).ready( function() {
 			output += '</div>';
 			jQuery( 'body' ).append( output );
 		} () );
-
 } );

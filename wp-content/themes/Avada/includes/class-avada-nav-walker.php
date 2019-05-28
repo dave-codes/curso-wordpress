@@ -292,7 +292,7 @@ if ( ! class_exists( 'Avada_Nav_Walker' ) ) {
 				$output = str_replace( '{megamenu_final_width}', 'style="width:' . $wrapper_width . $background_image . '" data-width="' . $wrapper_width . '"', $output );
 				$output = str_replace( '{megamenu_interior_width}', $megamenu_interior_width, $output );
 
-				$replacement = ( $this->total_num_of_columns > $this->max_num_of_columns ) ? 'fusion-megamenu-border' : '';
+				$replacement = ( $this->total_num_of_columns > $this->max_num_of_columns ) ? ' fusion-megamenu-border' : '';
 				$output      = str_replace( '{megamenu_border}', $replacement, $output );
 
 				foreach ( $this->submenu_matrix as $row => $columns ) {

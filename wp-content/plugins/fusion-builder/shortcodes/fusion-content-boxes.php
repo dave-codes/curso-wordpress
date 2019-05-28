@@ -435,18 +435,22 @@ if ( fusion_is_element_enabled( 'fusion_content_boxes' ) ) {
 				}
 
 				$defaults['image_width'] = FusionBuilder::validate_shortcode_attr_value( $defaults['image_width'], '' );
-
+				
 				if ( $defaults['image'] ) {
-					$image_data   = $fusion_library->images->get_attachment_data_by_helper( $defaults['image_id'], $defaults['image'] );
+					$image_data = $fusion_library->images->get_attachment_data_by_helper( $defaults['image_id'], $defaults['image'] );
 					$image_width  = $image_data['width'];
 					$image_height = $image_data['height'];
 
-					$defaults['image_width']  = ( '-1' === $defaults['image_width'] || '' === $defaults['image_width'] ) ? $image_width : $defaults['image_width'];
-					$defaults['image_height'] = round( $defaults['image_width'] / $image_width * $image_height, 2 );
+					if ( '-1' === $defaults['image_width'] || '' === $defaults['image_width'] ) {
+						$defaults['image_width']  = ( $image_width ) ? $image_width : '35';
+					}
+
+					$defaults['image_height'] = ( $image_width ) ? round( $defaults['image_width'] / $image_width * $image_height, 2 ) : '35';
+
 				} else {
-					$defaults['image_width'] = '' === $defaults['image_width'] ? '35' : $defaults['image_width'];
+					$defaults['image_width']  = '' === $defaults['image_width'] ? '35' : $defaults['image_width'];
 					$defaults['image_height'] = '35';
-				}
+				}				
 
 				if ( $defaults['linktarget'] ) {
 					$defaults['link_target'] = $defaults['linktarget'];
